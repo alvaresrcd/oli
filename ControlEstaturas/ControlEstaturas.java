@@ -11,12 +11,13 @@ import javax.swing.JOptionPane;
  * Fecha: 14/11/2025
  */
 public class ControlEstaturas {
-    // Arreglo para almacenar los 98 niños
-    private static final Nino[] ninos = new Nino[98];
+    private static final int NUM_NINOS = 5;
+    // Arreglo para almacenar los 5 niños
+    private static final Nino[] ninos = new Nino[NUM_NINOS];
     private static int contadorNinos = 0; // Para saber cuántos niños se han registrado
 
     public static void main(String[] args) {
-        // Llenar los datos de los 98 niños al iniciar
+        // Llenar los datos de los 5 niños al iniciar
         llenarDatos();
 
         int opcion;
@@ -61,8 +62,8 @@ public class ControlEstaturas {
     }
 
     public static void llenarDatos() {
-        JOptionPane.showMessageDialog(null, "A continuación, ingrese los datos para los 98 niños.");
-        while (contadorNinos < 98) {
+        JOptionPane.showMessageDialog(null, "A continuación, ingrese los datos para los " + NUM_NINOS + " niños.");
+        while (contadorNinos < NUM_NINOS) {
             try {
                 String nombre = JOptionPane.showInputDialog("Ingrese el nombre del niño #" + (contadorNinos + 1));
                 if (nombre == null || nombre.trim().isEmpty()) {
