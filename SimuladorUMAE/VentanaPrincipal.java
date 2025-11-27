@@ -200,18 +200,11 @@ public class VentanaPrincipal extends JFrame {
         }
     }
 
-    private void limpiarArchivo() {
-        listaPacientes.clear();
-        proximoNumeroAtencion = 1;
-        guardarPacientes();
-    }
-
     private void salir() {
         int confirm = JOptionPane.showConfirmDialog(this,
-                "¿Esta seguro de que desea salir? La lista de pacientes por atender se limpiara.",
+                "¿Esta seguro de que desea salir?",
                 "Confirmar Salida", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            limpiarArchivo();
             dispose();
             System.exit(0);
         }
