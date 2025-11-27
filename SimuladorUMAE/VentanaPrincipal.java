@@ -62,12 +62,13 @@ public class VentanaPrincipal extends JFrame {
         JPanel panelPrincipal = new JPanel(new BorderLayout());
         add(panelPrincipal);
 
-        ImageIcon imagen = new ImageIcon("hospital.png");
+        ImageIcon imagenOriginal = new ImageIcon("background.jpeg");
         JLabel etiquetaImagen = new JLabel();
-        if (imagen.getImage() != null && imagen.getIconWidth() > 0) {
-            etiquetaImagen.setIcon(imagen);
+        if (imagenOriginal.getImage() != null && imagenOriginal.getIconWidth() > 0) {
+            Image imagenEscalada = imagenOriginal.getImage().getScaledInstance(800, 150, Image.SCALE_SMOOTH);
+            etiquetaImagen.setIcon(new ImageIcon(imagenEscalada));
         } else {
-            etiquetaImagen.setText("Imagen no encontrada: hospital.png");
+            etiquetaImagen.setText("Imagen no encontrada: background.jpeg");
         }
         panelPrincipal.add(etiquetaImagen, BorderLayout.NORTH);
 
