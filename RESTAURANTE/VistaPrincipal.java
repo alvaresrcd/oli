@@ -106,15 +106,15 @@ public class VistaPrincipal extends JFrame {
         GridBagConstraints gbc_lblImagen = new GridBagConstraints();
         gbc_lblImagen.insets = new Insets(5, 5, 5, 5); gbc_lblImagen.gridx = 0; gbc_lblImagen.gridy = 5;
         gbc_lblImagen.gridwidth = 2;
-        java.net.URL imgUrl = getClass().getResource("recursos/icono_restaurante.png");
+        java.net.URL imgUrl = getClass().getResource("recursos/imagen_restaurante.jpeg");
         JLabel lblImagen;
         if (imgUrl != null) {
             ImageIcon icono = new ImageIcon(imgUrl);
-            Image imagen = icono.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            Image imagen = icono.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
             lblImagen = new JLabel(new ImageIcon(imagen));
         } else {
             lblImagen = new JLabel("Imagen no encontrada");
-            System.err.println("Error: No se pudo encontrar el recurso de imagen.");
+            System.err.println("Error: No se pudo encontrar el recurso de imagen 'imagen_restaurante.jpeg'.");
         }
         panelFormulario.add(lblImagen, gbc_lblImagen);
 
