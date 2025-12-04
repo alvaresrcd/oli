@@ -104,14 +104,33 @@ public class VistaPrincipal extends JFrame {
         panelFormulario.add(panelBotones, gbc_panelBotones);
 
         GridBagConstraints gbc_lblImagen = new GridBagConstraints();
-        gbc_lblImagen.insets = new Insets(5, 5, 5, 5); gbc_lblImagen.gridx = 0; gbc_lblImagen.gridy = 5;
+        gbc_lblImagen.insets = new Insets(15, 5, 5, 5);
+        gbc_lblImagen.gridx = 0;
+        gbc_lblImagen.gridy = 5;
         gbc_lblImagen.gridwidth = 2;
+        gbc_lblImagen.anchor = GridBagConstraints.CENTER;
+
         java.net.URL imgUrl = getClass().getResource("recursos/imagen_restaurante.jpeg");
         JLabel lblImagen;
         if (imgUrl != null) {
             ImageIcon icono = new ImageIcon(imgUrl);
-            Image imagen = icono.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
-            lblImagen = new JLabel(new ImageIcon(imagen));
+            Image imagenOriginal = icono.getImage();
+
+            int anchoContenedor = 250;
+            int altoContenedor = 180;
+
+            double ratioOriginal = (double) imagenOriginal.getWidth(null) / imagenOriginal.getHeight(null);
+
+            int nuevoAncho = anchoContenedor;
+            int nuevoAlto = (int) (nuevoAncho / ratioOriginal);
+
+            if (nuevoAlto > altoContenedor) {
+                nuevoAlto = altoContenedor;
+                nuevoAncho = (int) (nuevoAlto * ratioOriginal);
+            }
+
+            Image imagenEscalada = imagenOriginal.getScaledInstance(nuevoAncho, nuevoAlto, Image.SCALE_SMOOTH);
+            lblImagen = new JLabel(new ImageIcon(imagenEscalada));
         } else {
             lblImagen = new JLabel("Imagen no encontrada");
             System.err.println("Error: No se pudo encontrar el recurso de imagen 'imagen_restaurante.jpeg'.");
