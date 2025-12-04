@@ -110,10 +110,16 @@ public class VistaPrincipal extends JFrame {
         gbc_lblImagen.gridwidth = 2;
         gbc_lblImagen.anchor = GridBagConstraints.CENTER;
 
-        java.net.URL imgUrl = getClass().getResource("recursos/imagen_restaurante.jpeg");
+        // NOTA: Se está utilizando una ruta de archivo absoluta para asegurar que la imagen se cargue
+        // en el entorno de desarrollo específico del usuario.
+        // La práctica estándar sería cargar la imagen como un recurso del classpath, así:
+        // java.net.URL imgUrl = getClass().getResource("recursos/imagen_restaurante.jpeg");
+        // ImageIcon icono = new ImageIcon(imgUrl);
+        String rutaImagen = "C:\\Users\\zaval\\Downloads\\descarga(1).jpeg";
         JLabel lblImagen;
-        if (imgUrl != null) {
-            ImageIcon icono = new ImageIcon(imgUrl);
+        ImageIcon icono = new ImageIcon(rutaImagen);
+
+        if (icono.getImageLoadStatus() == MediaTracker.COMPLETE) {
             Image imagenOriginal = icono.getImage();
 
             int anchoContenedor = 250;
@@ -132,8 +138,8 @@ public class VistaPrincipal extends JFrame {
             Image imagenEscalada = imagenOriginal.getScaledInstance(nuevoAncho, nuevoAlto, Image.SCALE_SMOOTH);
             lblImagen = new JLabel(new ImageIcon(imagenEscalada));
         } else {
-            lblImagen = new JLabel("Imagen no encontrada");
-            System.err.println("Error: No se pudo encontrar el recurso de imagen 'imagen_restaurante.jpeg'.");
+            lblImagen = new JLabel("Imagen no encontrada en la ruta especificada.");
+            System.err.println("Error: No se pudo cargar la imagen desde: " + rutaImagen);
         }
         panelFormulario.add(lblImagen, gbc_lblImagen);
 
