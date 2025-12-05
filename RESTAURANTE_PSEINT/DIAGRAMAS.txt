@@ -1,0 +1,66 @@
+A continuación, se describen los diagramas de Caso de Uso y de Actividad para el sistema de gestión de reservaciones.
+
+===================================
+1. DIAGRAMA DE CASO DE USO
+===================================
+
+ACTOR: Empleado del Restaurante
+
+CASOS DE USO:
+-   **Gestionar Reservaciones:** Es el caso de uso principal que engloba todas las interacciones del empleado con el sistema.
+-   **Listar Reservaciones:**
+    -   Descripción: El empleado solicita al sistema ver todas las reservaciones actuales. El sistema muestra una lista formateada.
+-   **Agregar Reservación:**
+    -   Descripción: El empleado ingresa los datos de un cliente (nombre, celular, día, hora) para crear una nueva reservación. El sistema la guarda.
+-   **Modificar Reservación:**
+    -   Descripción: El empleado busca una reservación existente (usando el celular como identificador) y actualiza el día y/o la hora.
+-   **Cancelar Reservación:**
+    -   Descripción: El empleado busca una reservación existente por su número de celular y la elimina del sistema.
+-   **Guardar y Salir:**
+    -   Descripción: El empleado finaliza la sesión. El sistema guarda todas las reservaciones actuales en el archivo "reservaciones.txt" antes de cerrarse.
+
+===================================
+2. DIAGRAMA DE ACTIVIDAD (Flujo principal)
+===================================
+
+-   **Inicio:** El programa se ejecuta.
+
+-   **Actividad 1:** Se cargan las reservaciones existentes desde el archivo "reservaciones.txt".
+    -   Si el archivo no existe, se crea uno nuevo y se continúa con una lista vacía.
+
+-   **Bucle de Menú (Inicio):**
+
+-   **Actividad 2:** Se muestra el menú principal con las 5 opciones.
+
+-   **Actividad 3:** El sistema espera a que el empleado ingrese una opción.
+
+-   **Decisión:** Se evalúa la opción seleccionada.
+    -   **Si es 1 (Listar):**
+        -   Se muestra la lista de reservaciones.
+        -   Se regresa al inicio del bucle de menú.
+    -   **Si es 2 (Agregar):**
+        -   Se solicitan los datos de la nueva reservación.
+        -   Se guarda la reservación en la memoria (arreglos).
+        -   Se regresa al inicio del bucle de menú.
+    -   **Si es 3 (Modificar):**
+        -   Se solicita el celular para la búsqueda.
+        -   Se busca la reservación.
+        -   Si se encuentra, se piden los nuevos datos y se actualiza.
+        -   Si no, se muestra un mensaje de error.
+        -   Se regresa al inicio del bucle de menú.
+    -   **Si es 4 (Cancelar):**
+        -   Se solicita el celular para la búsqueda.
+        -   Se busca la reservación.
+        -   Si se encuentra, se pide confirmación y se elimina.
+        -   Si no, se muestra un mensaje de error.
+        -   Se regresa al inicio del bucle de menú.
+    -   **Si es 5 (Salir):**
+        -   **Actividad 4:** Se guardan todas las reservaciones de la memoria al archivo "reservaciones.txt", sobrescribiendo su contenido.
+        -   Se finaliza el bucle.
+    -   **Si es otra opción:**
+        -   Se muestra un mensaje de "opción no válida".
+        -   Se regresa al inicio del bucle de menú.
+
+-   **Bucle de Menú (Fin):**
+
+-   **Fin:** El programa termina.
