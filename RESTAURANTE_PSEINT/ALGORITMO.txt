@@ -1,43 +1,47 @@
-NOMBRE DEL PROGRAMA: Sistema de Gestión de Reservaciones
+NOMBRE DEL PROGRAMA: Sistema de Gestión de Reservaciones (Estructura MVC Simulada)
 
 DESCRIPCIÓN:
-Este programa permite a un restaurante gestionar las reservaciones de sus clientes. Ofrece un menú de consola para realizar las operaciones básicas de Crear, Leer, Actualizar y Borrar (CRUD) reservaciones. Toda la información se guarda en un archivo de texto llamado "reservaciones.txt" para que los datos persistan entre ejecuciones del programa.
+Este programa gestiona las reservaciones de un restaurante a través de un menú de consola. Para reflejar la estructura de la aplicación original en Java, el pseudocódigo está organizado para simular un patrón de diseño Modelo-Vista-Controlador (MVC).
+-   El MODELO contiene los datos (los arreglos de reservaciones).
+-   La VISTA maneja toda la interacción con el usuario (mostrar menús, mensajes, etc.).
+-   El CONTROLADOR contiene la lógica de la aplicación (qué hacer cuando el usuario elige una opción).
 
 ALGORITMO:
-1.  INICIO DEL PROGRAMA.
+1.  INICIO DEL PROGRAMA (Proceso Principal).
 
-2.  DEFINICIÓN DE DATOS:
-    - Se definen 4 arreglos paralelos (nombres, celulares, dias, horas) para almacenar los datos de hasta 100 reservaciones.
-    - Se declara una variable `num_reservaciones` para contar el número actual de reservaciones activas.
+2.  SECCIÓN DEL MODELO:
+    -   Se definen los arreglos paralelos (nombres, celulares, dias, horas) que funcionarán como el almacenamiento de datos de las reservaciones.
+    -   Se define la variable `num_reservaciones` que controla el tamaño actual de los datos.
 
-3.  CARGA DE DATOS INICIAL:
-    - El programa busca y abre el archivo "reservaciones.txt".
-    - Si el archivo existe y contiene datos, se lee línea por línea.
-    - Cada línea (que contiene los datos de una reservación separados por comas) es procesada por una función auxiliar que extrae cada campo.
-    - Los datos extraídos se guardan en los arreglos paralelos.
-    - `num_reservaciones` se actualiza con el total de registros cargados.
-    - Si el archivo no existe, se crea uno vacío.
+3.  PUNTO DE ENTRADA DE LA APLICACIÓN:
+    -   Se llama a una función del CONTROLADOR (`Controlador_CargarReservaciones`) para llenar el Modelo con los datos del archivo "reservaciones.txt".
 
-4.  CICLO PRINCIPAL (MENÚ):
-    - El programa entra en un bucle `Repetir...Hasta Que` que se ejecuta hasta que el usuario elige la opción de salir (5).
-    - En cada iteración, se muestra un menú con las siguientes opciones:
-        1. Listar todas las reservaciones
-        2. Agregar nueva reservación
-        3. Modificar una reservación
-        4. Cancelar una reservación
-        5. Guardar y Salir
+4.  CICLO PRINCIPAL (Bucle `Repetir...Hasta Que`):
+    -   El bucle se ejecuta hasta que el usuario elige la opción de salir (5).
+    -   En cada iteración:
+        a. Se llama a una función de la VISTA (`Vista_MostrarMenu`) para mostrar las opciones y obtener la elección del usuario.
+        b. Se llama a una función principal del CONTROLADOR (`Controlador_ManejarOpcion`), pasándole la opción del usuario y los datos del Modelo.
 
-5.  PROCESAMIENTO DE OPCIONES:
-    - Opción 1 (Listar): Se recorren los arreglos desde el índice 0 hasta `num_reservaciones - 1` y se muestra en pantalla la información de cada reservación en un formato de tabla.
-    - Opción 2 (Agregar): Se verifica si hay espacio disponible. Si es así, se piden al usuario los 4 datos (nombre, celular, día, hora), se añaden al final de los arreglos y se incrementa `num_reservaciones`.
-    - Opción 3 (Modificar): Se le pide al usuario el número de celular de la reservación que desea cambiar. Se busca este celular en el arreglo `celulares`. Si se encuentra, se le piden al usuario el nuevo día y la nueva hora, y se actualizan los datos en las posiciones correspondientes de los arreglos `dias` y `horas`.
-    - Opción 4 (Cancelar): Similar a modificar, se busca la reservación por número de celular. Si se encuentra, se pide confirmación. Si el usuario confirma, la reservación se elimina "desplazando" todos los elementos posteriores una posición hacia arriba en los arreglos para llenar el espacio vacío, y se decrementa `num_reservaciones`.
-    - Opción 5 (Salir): Se invoca al procedimiento para guardar los datos y el bucle principal termina.
+5.  SECCIÓN DEL CONTROLADOR (Lógica de negocio):
+    -   `Controlador_ManejarOpcion`: Actúa como un enrutador. Utiliza una estructura `Segun` para llamar a otras funciones del Controlador o la Vista basándose en la opción del usuario.
+    -   `Controlador_AgregarReservacion`:
+        -   Verifica si hay capacidad.
+        -   Llama a la VISTA (`Vista_PedirDatosReservacion`) para obtener los datos del usuario.
+        -   Actualiza el MODELO (los arreglos) con la nueva información.
+        -   Llama a la VISTA (`Vista_MostrarMensajeExito`) para notificar al usuario.
+    -   `Controlador_ModificarReservacion`:
+        -   Llama a la VISTA para mostrar las reservaciones actuales.
+        -   Pide al usuario el celular a buscar.
+        -   Llama a una función auxiliar (`Controlador_BuscarPorCelular`) para encontrar el índice en el MODELO.
+        -   Si lo encuentra, pide los nuevos datos y actualiza el MODELO.
+    -   `Controlador_CancelarReservacion`:
+        -   Funciona de manera similar a modificar, pero una vez encontrado y confirmado, reorganiza el MODELO para eliminar el registro.
+    -   `Controlador_GuardarReservaciones`:
+        -   Abre "reservaciones.txt" y escribe el contenido actual del MODELO en el archivo.
 
-6.  GUARDADO DE DATOS:
-    - Se abre el archivo "reservaciones.txt" en modo de escritura (sobrescribiendo su contenido).
-    - Se recorren los arreglos desde 0 hasta `num_reservaciones - 1`.
-    - Para cada reservación, se construye una cadena con los 4 datos separados por comas y se escribe como una nueva línea en el archivo.
-    - Se cierra el archivo.
+6.  SECCIÓN DE LA VISTA (Interacción con el usuario):
+    -   Contiene todas las funciones que escriben en la consola o leen datos del teclado.
+    -   Estas funciones NO contienen lógica de negocio. Solo muestran información o la solicitan. Por ejemplo, `Vista_ListarReservaciones` solo muestra los datos que recibe; no sabe de dónde vienen.
 
-7.  FIN DEL PROGRAMA.
+7.  FIN DEL PROGRAMA:
+    -   Cuando el usuario elige salir, el bucle termina y el programa finaliza.
