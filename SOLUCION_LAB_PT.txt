@@ -1,0 +1,70 @@
+SOLUCIÓN DE PRÁCTICA DE PACKET TRACER
+
+--- PARTE 3: CONFIGURACIÓN DE INTERFACES Y DIRECCIONAMIENTO ---
+
+*** R1 - MATRIZ ***
+1. Haz clic en el router R1-Matriz y ve a la pestaña CLI.
+2. Ingresa los siguientes comandos:
+
+enable
+configure terminal
+hostname R1-Matriz
+
+! Configuración Interfaz LAN (GigabitEthernet0/0/0 o similar)
+interface GigabitEthernet0/0/0
+ ip address 192.168.10.1 255.255.255.192
+ no shutdown
+ exit
+
+! Configuración Interfaz WAN (Serial0/1/0 o similar)
+interface Serial0/1/0
+ ip address 192.168.10.97 255.255.255.252
+ no shutdown
+ exit
+
+*** R2 - SUCURSAL ***
+1. Haz clic en el router R2-Sucursal y ve a la pestaña CLI.
+2. Ingresa los siguientes comandos:
+
+enable
+configure terminal
+hostname R2-Sucursal
+
+! Configuración Interfaz LAN (GigabitEthernet0/0/0 o similar)
+interface GigabitEthernet0/0/0
+ ip address 192.168.10.65 255.255.255.224
+ no shutdown
+ exit
+
+! Configuración Interfaz WAN (Serial0/1/0 o similar)
+interface Serial0/1/0
+ ip address 192.168.10.98 255.255.255.252
+ no shutdown
+ exit
+
+*** CONFIGURACIÓN DE EQUIPOS FINALES ***
+
+PC-A (Matriz):
+- IP Address: 192.168.10.62
+- Subnet Mask: 255.255.255.192
+- Default Gateway: 192.168.10.1
+
+PC-B (Sucursal):
+- IP Address: 192.168.10.94
+- Subnet Mask: 255.255.255.224
+- Default Gateway: 192.168.10.65
+
+--- PARTE 4: ENRUTAMIENTO BÁSICO Y PRUEBA DE FUEGO ---
+
+*** R1 - MATRIZ (Ruta hacia Sucursal) ***
+(En modo de configuración global)
+ip route 192.168.10.64 255.255.255.224 192.168.10.98
+
+*** R2 - SUCURSAL (Ruta hacia Matriz) ***
+(En modo de configuración global)
+ip route 192.168.10.0 255.255.255.192 192.168.10.97
+
+--- PRUEBA FINAL ---
+1. Abre el Command Prompt de la PC-A.
+2. Escribe: ping 192.168.10.94
+3. Si recibes respuesta, ¡el laboratorio está completo!
