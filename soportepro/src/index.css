@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-oxford-blue: #002147;
+  --color-slate-gray: #708090;
+  --color-app-white: #FFFFFF;
+
+  --color-status-pending: #ef4444; /* Red-500 */
+  --color-status-process: #eab308; /* Yellow-500 */
+  --color-status-done: #22c55e;    /* Green-500 */
+}
+
+:root {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
