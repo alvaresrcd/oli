@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soporte — Taller de Soporte Técnico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --oxford: #002147;
+  --oxford-light: #003068;
+  --oxford-dark: #001530;
+  --slate: #4A5568;
+  --slate-light: #718096;
+  --slate-mid: #2D3748;
+  --white: #FFFFFF;
+  --bg: #F7F8FA;
+  --bg-card: #FFFFFF;
+  --border: #E2E8F0;
+  --border-dark: #CBD5E0;
+  --text-primary: #1A202C;
+  --text-secondary: #4A5568;
+  --text-muted: #A0AEC0;
+  --accent: #1E6BA8;
+  --accent-light: #EBF4FF;
+  --success: #276749;
+  --success-bg: #C6F6D5;
+  --warning: #744210;
+  --warning-bg: #FEFCBF;
+  --danger: #742A2A;
+  --danger-bg: #FED7D7;
+  --sidebar-w: 240px;
+  --header-h: 56px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); font-size: 14px; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; }
+a { text-decoration: none; color: inherit; }
+
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--oxford);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.sidebar-brand {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.brand-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.brand-icon {
+  width: 36px; height: 36px; background: var(--accent);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+}
+.brand-icon svg { width: 20px; height: 20px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; }
+.brand-name { color: white; font-size: 15px; font-weight: 600; letter-spacing: -0.2px; line-height: 1.2; }
+.brand-sub { color: rgba(255,255,255,0.45); font-size: 11px; font-weight: 400; }
+
+.sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+.nav-section { padding: 0 12px; margin-bottom: 4px; }
+.nav-section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 1px;
+  color: rgba(255,255,255,0.3); text-transform: uppercase;
+  padding: 8px 8px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 6px;
+  color: rgba(255,255,255,0.65); font-size: 13.5px; font-weight: 400;
+  cursor: pointer; transition: all 0.15s; margin-bottom: 1px;
+  user-select: none;
+}
+.nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+.nav-item.active { background: var(--accent); color: white; font-weight: 500; }
+.nav-item svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: rgba(255,255,255,0.15);
+  color: white; font-size: 10px; font-weight: 600;
+  padding: 1px 6px; border-radius: 10px;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,0.25); }
+
+.sidebar-footer {
+  padding: 12px; border-top: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 6px;
+  color: rgba(255,255,255,0.65);
+}
+.user-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent); display: flex; align-items: center;
+  justify-content: center; font-size: 12px; font-weight: 600; color: white; flex-shrink: 0;
+}
+.user-name { font-size: 12.5px; color: rgba(255,255,255,0.8); font-weight: 500; }
+.user-role { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar {
+  height: var(--header-h); background: white; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px; gap: 16px;
+  flex-shrink: 0;
+}
+.topbar-title { font-size: 16px; font-weight: 600; color: var(--text-primary); flex: 1; }
+.topbar-subtitle { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 1px; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--radius); font-size: 13px;
+  font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.15s;
+}
+.btn-primary { background: var(--oxford); color: white; }
+.btn-primary:hover { background: var(--oxford-light); }
+.btn-secondary { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-dark); }
+.btn-secondary:hover { background: var(--bg); }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+.content { flex: 1; overflow-y: auto; padding: 24px; }
+
+
+.page { display: none; }
+.page.active { display: block; }
+
+.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.metric-card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 18px 20px; position: relative; overflow: hidden;
+}
+.metric-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent);
+}
+.metric-card.green::before { background: #38A169; }
+.metric-card.amber::before { background: #D69E2E; }
+.metric-card.red::before { background: #E53E3E; }
+.metric-label { font-size: 12px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.metric-value { font-size: 28px; font-weight: 600; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
+.metric-sub { font-size: 12px; color: var(--text-muted); }
+.metric-icon {
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--accent-light); display: flex; align-items: center; justify-content: center;
+}
+.metric-icon.green-bg { background: #F0FFF4; }
+.metric-icon.amber-bg { background: #FFFFF0; }
+.metric-icon.red-bg { background: #FFF5F5; }
+.metric-icon svg { width: 20px; height: 20px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+.metric-icon.green-bg svg { stroke: #38A169; }
+.metric-icon.amber-bg svg { stroke: #D69E2E; }
+.metric-icon.red-bg svg { stroke: #E53E3E; }
+
+
+.dash-grid { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+.card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 20px;
+}
+.card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+.card-title svg { width: 16px; height: 16px; fill: none; stroke: var(--text-muted); stroke-width: 2; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600;
+}
+.badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+.badge-pending { background: var(--danger-bg); color: var(--danger); }
+.badge-pending::before { background: #E53E3E; }
+.badge-inprogress { background: var(--warning-bg); color: var(--warning); }
+.badge-inprogress::before { background: #D69E2E; }
+.badge-done { background: var(--success-bg); color: var(--success); }
+.badge-done::before { background: #38A169; }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 1px solid var(--border); background: var(--bg); }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; cursor: pointer; }
+tbody tr:hover { background: var(--accent-light); }
+tbody tr.selected { background: #EBF4FF; }
+tbody td { padding: 12px 14px; color: var(--text-primary); }
+
+.filters { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.filter-chip {
+  padding: 5px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 500;
+  cursor: pointer; border: 1px solid var(--border-dark); background: white;
+  color: var(--text-secondary); transition: all 0.12s;
+}
+.filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+.filter-chip.active { background: var(--oxford); color: white; border-color: var(--oxford); }
+.search-input {
+  padding: 7px 12px 7px 34px; border: 1px solid var(--border-dark); border-radius: var(--radius);
+  font-size: 13px; color: var(--text-primary); background: white; outline: none;
+  width: 220px; font-family: inherit;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-wrap { position: relative; }
+.search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; fill: none; stroke: var(--text-muted); stroke-width: 2; }
+
+.stepper { display: flex; align-items: center; gap: 0; margin-bottom: 28px; }
+.step {
+  display: flex; align-items: center; gap: 10px; flex: 1;
+  position: relative;
+}
+.step:not(:last-child)::after {
+  content: ''; position: absolute; left: calc(50% + 18px); right: calc(-50% + 18px);
+  top: 18px; height: 2px; background: var(--border); z-index: 0;
+}
+.step.done:not(:last-child)::after, .step.active:not(:last-child)::after { background: var(--accent); }
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; border: 2px solid var(--border);
+  background: white; color: var(--text-muted); flex-shrink: 0; z-index: 1; position: relative;
+}
+.step.active .step-num { border-color: var(--accent); background: var(--accent); color: white; }
+.step.done .step-num { border-color: var(--accent); background: var(--accent); color: white; }
+.step-label { font-size: 12px; color: var(--text-muted); font-weight: 500; white-space: nowrap; }
+.step.active .step-label { color: var(--accent); font-weight: 600; }
+.step.done .step-label { color: var(--text-secondary); }
+.step-inner { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.form-input {
+  padding: 9px 12px; border: 1px solid var(--border-dark); border-radius: var(--radius);
+  font-size: 13.5px; color: var(--text-primary); outline: none; font-family: inherit;
+  transition: border-color 0.12s; background: white;
+}
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(30,107,168,0.1); }
+.form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234A5568' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
+
+.step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+.panel-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.2); z-index: 50; }
+.panel-overlay.open { display: block; }
+.side-panel {
+  position: fixed; right: -500px; top: 0; bottom: 0; width: 480px;
+  background: white; box-shadow: var(--shadow-md); z-index: 51; display: flex; flex-direction: column;
+  transition: right 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.side-panel.open { right: 0; }
+.panel-header { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.panel-header h3 { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.panel-close { width: 30px; height: 30px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: background 0.12s; }
+.panel-close:hover { background: var(--bg); color: var(--text-primary); }
+.panel-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+.panel-body { flex: 1; overflow-y: auto; padding: 20px; }
+.panel-footer { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; flex-shrink: 0; }
+
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 200; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.toast {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--oxford); color: white; padding: 12px 18px;
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+  font-size: 13.5px; font-weight: 500; min-width: 280px; max-width: 380px;
+  pointer-events: all; transform: translateX(120%); opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toast.show { transform: translateX(0); opacity: 1; }
+.toast.success { background: #276749; }
+.toast.warning { background: #744210; }
+.toast.error { background: #742A2A; }
+.toast svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.5; flex-shrink: 0; }
+
+
+.inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.inv-card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 16px; transition: box-shadow 0.12s;
+}
+.inv-card:hover { box-shadow: var(--shadow-md); }
+.inv-name { font-size: 13.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.inv-sku { font-size: 11px; color: var(--text-muted); font-family: 'DM Mono', monospace; margin-bottom: 12px; }
+.inv-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.inv-label { font-size: 11.5px; color: var(--text-muted); }
+.inv-val { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.inv-stock-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 10px; }
+.inv-stock-fill { height: 100%; border-radius: 2px; background: #38A169; transition: width 0.3s; }
+.inv-stock-fill.low { background: #D69E2E; }
+.inv-stock-fill.critical { background: #E53E3E; }
+
+.report-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+.income-table tbody tr:hover { cursor: default; }
+
+.checkbox-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: var(--text-secondary); }
+.checkbox-wrap input { width: 15px; height: 15px; cursor: pointer; accent-color: var(--oxford); }
+
+.type-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.type-frecuente { background: #E0E7FF; color: #3730A3; }
+.type-regular { background: var(--bg); color: var(--text-muted); }
+
+
+.comp-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 12px; background: var(--bg); border-radius: var(--radius);
+  margin-bottom: 8px; font-size: 13px;
+}
+.comp-item-name { font-weight: 500; color: var(--text-primary); }
+.comp-item-price { color: var(--text-muted); font-size: 12px; }
+.comp-remove { color: var(--text-muted); cursor: pointer; font-size: 18px; line-height: 1; padding: 2px 6px; border-radius: 4px; }
+.comp-remove:hover { color: #E53E3E; background: var(--danger-bg); }
+
+
+.section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; }
+
+
+.divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+
+.bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 160px; padding-bottom: 24px; }
+.bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+.bar { width: 100%; background: var(--accent); border-radius: 4px 4px 0 0; min-width: 24px; transition: height 0.3s; opacity: 0.85; }
+.bar:hover { opacity: 1; }
+.bar-label { font-size: 10.5px; color: var(--text-muted); }
+.bar-val { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+
+
+.mini-list { display: flex; flex-direction: column; gap: 2px; }
+.mini-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius); transition: background 0.1s; }
+.mini-item:hover { background: var(--bg); }
+.mini-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.mini-name { flex: 1; font-size: 13px; color: var(--text-primary); }
+.mini-count { font-size: 12.5px; font-weight: 600; color: var(--text-secondary); font-family: 'DM Mono', monospace; }
+
+
+.empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+.empty svg { width: 48px; height: 48px; fill: none; stroke: var(--border-dark); stroke-width: 1.5; margin: 0 auto 12px; display: block; }
+.empty p { font-size: 13.5px; }
+
+
+.cost-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 13px; }
+.cost-row.total { border-top: 1px solid var(--border); margin-top: 4px; padding-top: 12px; font-weight: 700; font-size: 15px; color: var(--text-primary); }
+.cost-row.discount { color: var(--success); }
+.cost-label { color: var(--text-secondary); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 3px; }
+
+.footer-credits {
+  background: var(--oxford-dark); color: rgba(255,255,255,0.45);
+  font-size: 11px; text-align: center; padding: 12px 24px;
+  border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0;
+  line-height: 1.6;
+}
+.footer-credits strong { color: rgba(255,255,255,0.7); font-weight: 500; }
+</style>
+</head>
+|<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div>
+          <div class="brand-name">Soporte</div>
+          <div class="brand-sub">Taller Técnico</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">Principal</div>
+        <div class="nav-item active" data-page="dashboard">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item" data-page="recepcion">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Recepción
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Gestión</div>
+        <div class="nav-item" data-page="taller">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 16 16.59l1-1a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Taller
+          <span class="nav-badge" id="nav-badge-taller">0</span>
+        </div>
+        <div class="nav-item" data-page="inventario">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          Inventario
+        </div>
+        <div class="nav-item" data-page="reportes">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Reportes
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">Ad</div>
+        <div>
+          <div class="user-name">Administrador</div>
+          <div class="user-role">Gerente de Taller</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <div class="topbar-title" id="page-title">Dashboard</div>
+        <div class="topbar-subtitle" id="page-subtitle">Resumen general del taller</div>
+      </div>
+      <div class="topbar-actions">
+        <span id="topbar-date" style="font-size:12px;color:var(--text-muted);"></span>
+        <button class="btn btn-primary" id="topbar-cta" onclick="navigate('recepcion')">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nueva Orden
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <div class="page active" id="page-dashboard">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Total Órdenes</div>
+            <div class="metric-value" id="m-total">0</div>
+            <div class="metric-sub">Este mes</div>
+            <div class="metric-icon">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+          </div>
+          <div class="metric-card red">
+            <div class="metric-label">Pendientes</div>
+            <div class="metric-value" id="m-pending">0</div>
+            <div class="metric-sub">Requieren atención</div>
+            <div class="metric-icon red-bg">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+          </div>
+          <div class="metric-card amber">
+            <div class="metric-label">En Proceso</div>
+            <div class="metric-value" id="m-inprogress">0</div>
+            <div class="metric-sub">En reparación activa</div>
+            <div class="metric-icon amber-bg">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+          </div>
+          <div class="metric-card green">
+            <div class="metric-label">Terminadas</div>
+            <div class="metric-value" id="m-done">0</div>
+            <div class="metric-sub">Listas para entrega</div>
+            <div class="metric-icon green-bg">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-title">
+              Órdenes Recientes
+              <span style="font-size:12px;color:var(--text-muted);font-weight:400;">Últimas 5</span>
+            </div>
+            <div id="dash-recent-orders">
+              <div class="empty"><p>Sin órdenes registradas</p></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="card">
+              <div class="card-title">Por Estatus</div>
+              <div class="mini-list" id="dash-status-list">
+                <div class="mini-item"><div class="mini-dot" style="background:#E53E3E;"></div><span class="mini-name">Pendiente</span><span class="mini-count" id="ds-pending">0</span></div>
+                <div class="mini-item"><div class="mini-dot" style="background:#D69E2E;"></div><span class="mini-name">En Proceso</span><span class="mini-count" id="ds-inprogress">0</span></div>
+                <div class="mini-item"><div class="mini-dot" style="background:#38A169;"></div><span class="mini-name">Terminado</span><span class="mini-count" id="ds-done">0</span></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">Ingresos del Mes</div>
+              <div style="font-size:26px;font-weight:700;color:var(--oxford);" id="dash-revenue">$0.00</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Órdenes terminadas</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Stock Crítico</div>
+              <div class="mini-list" id="dash-stock-low">
+                <div class="empty" style="padding:10px 0;"><p>Stock en niveles normales</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-recepcion">
+        <div class="card" style="max-width:760px;">
+          <div class="stepper" id="stepper">
+            <div class="step active" id="step-1">
+              <div class="step-inner">
+                <div class="step-num">1</div>
+                <div class="step-label">Datos del Cliente</div>
+              </div>
+            </div>
+            <div class="step" id="step-2">
+              <div class="step-inner">
+                <div class="step-num">2</div>
+                <div class="step-label">Datos del Equipo</div>
+              </div>
+            </div>
+            <div class="step" id="step-3">
+              <div class="step-inner">
+                <div class="step-num">3</div>
+                <div class="step-label">Detalles de Falla</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="step-content-1">
+            <div class="section-label">Información del Cliente</div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Nombre Completo *</label>
+                <input type="text" class="form-input" id="f-nombre" placeholder="Ej. Juan Pérez García">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Teléfono *</label>
+                <input type="tel" class="form-input" id="f-tel" placeholder="33 1234 5678">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-input" id="f-email" placeholder="cliente@email.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tipo de Cliente *</label>
+                <select class="form-input form-select" id="f-tipo">
+                  <option value="Regular">Regular</option>
+                  <option value="Frecuente">Frecuente (10% desc.)</option>
+                </select>
+              </div>
+            </div>
+            <div class="step-nav">
+              <div style="font-size:12px;color:var(--text-muted);">Paso 1 de 3</div>
+              <button class="btn btn-primary" onclick="stepNext(1)">Continuar →</button>
+            </div>
+          </div>
+          <div id="step-content-2" style="display:none;">
+            <div class="section-label">Información del Equipo</div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Tipo de Equipo *</label>
+                <select class="form-input form-select" id="f-equipo">
+                  <option value="Laptop">Laptop / Notebook</option>
+                  <option value="PC">PC de Escritorio</option>
+                  <option value="Tablet">Tablet</option>
+                  <option value="Celular">Celular / Smartphone</option>
+                  <option value="Impresora">Impresora</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Marca *</label>
+                <input type="text" class="form-input" id="f-marca" placeholder="Ej. Dell, HP, Lenovo">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Modelo *</label>
+                <input type="text" class="form-input" id="f-modelo" placeholder="Ej. Inspiron 15 3000">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Número de Serie</label>
+                <input type="text" class="form-input" id="f-serie" placeholder="S/N o IMEI">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Color</label>
+                <input type="text" class="form-input" id="f-color" placeholder="Ej. Negro, Plateado">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Accesorios</label>
+                <input type="text" class="form-input" id="f-accesorios" placeholder="Ej. Cargador, Funda">
+              </div>
+            </div>
+            <div class="step-nav">
+              <button class="btn btn-secondary" onclick="stepBack(2)">← Regresar</button>
+              <div style="font-size:12px;color:var(--text-muted);">Paso 2 de 3</div>
+              <button class="btn btn-primary" onclick="stepNext(2)">Continuar →</button>
+            </div>
+          </div>
+          <div id="step-content-3" style="display:none;">
+            <div class="section-label">Descripción de la Falla</div>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label class="form-label">Descripción del Problema *</label>
+                <textarea class="form-input" id="f-falla" rows="3" placeholder="Describe el problema que reporta el cliente..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Prioridad</label>
+                <select class="form-input form-select" id="f-prioridad">
+                  <option value="Normal">Normal</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Urgente">Urgente</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Costo Diagnóstico (MXN)</label>
+                <input type="number" class="form-input" id="f-costo" placeholder="150" min="0" step="10">
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Observaciones adicionales</label>
+                <textarea class="form-input" id="f-obs" rows="2" placeholder="Golpes, rayones, historial de reparaciones..."></textarea>
+              </div>
+            </div>
+            <div class="step-nav">
+              <button class="btn btn-secondary" onclick="stepBack(3)">← Regresar</button>
+              <div style="font-size:12px;color:var(--text-muted);">Paso 3 de 3</div>
+              <button class="btn btn-primary" onclick="registrarOrden()">
+                <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Registrar Orden
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-taller">
+        <div class="filters">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="search-input" id="taller-search" placeholder="Buscar por cliente, equipo..." oninput="renderTaller()">
+          </div>
+          <span style="font-size:12px;color:var(--text-muted);margin:0 4px;">Estatus:</span>
+          <div class="filter-chip active" data-filter="all" onclick="setFilter('all',this)">Todos</div>
+          <div class="filter-chip" data-filter="Pendiente" onclick="setFilter('Pendiente',this)">Pendiente</div>
+          <div class="filter-chip" data-filter="En Proceso" onclick="setFilter('En Proceso',this)">En Proceso</div>
+          <div class="filter-chip" data-filter="Terminado" onclick="setFilter('Terminado',this)">Terminado</div>
+          <span style="font-size:12px;color:var(--text-muted);margin:0 4px;">Prioridad:</span>
+          <div class="filter-chip active" data-filter-prio="all" onclick="setFilterPrio('all',this)">Todas</div>
+          <div class="filter-chip" data-filter-prio="Alta" onclick="setFilterPrio('Alta',this)">Alta</div>
+          <div class="filter-chip" data-filter-prio="Urgente" onclick="setFilterPrio('Urgente',this)">Urgente</div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID Orden</th>
+                  <th>Fecha</th>
+                  <th>Cliente</th>
+                  <th>Equipo</th>
+                  <th>Falla</th>
+                  <th>Prioridad</th>
+                  <th>Estatus</th>
+                  <th>Costo</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="taller-tbody"></tbody>
+            </table>
+          </div>
+          <div id="taller-empty" class="empty" style="display:none;">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <p>No hay órdenes que coincidan con los filtros</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-inventario">
+        <div class="filters" style="margin-bottom:18px;">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="search-input" id="inv-search" placeholder="Buscar pieza o refacción..." oninput="renderInventario()">
+          </div>
+          <div style="margin-left:auto;font-size:13px;color:var(--text-muted);"><span id="inv-count">0</span> piezas</div>
+        </div>
+        <div class="inv-grid" id="inv-grid"></div>
+        <div id="inv-empty" class="empty" style="display:none;">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          <p>No se encontraron piezas</p>
+        </div>
+      </div>
+
+      <div class="page" id="page-reportes">
+        <div class="report-summary">
+          <div class="metric-card">
+            <div class="metric-label">Ingresos Totales</div>
+            <div class="metric-value" id="r-total">$0</div>
+            <div class="metric-sub">Órdenes terminadas</div>
+          </div>
+          <div class="metric-card green">
+            <div class="metric-label">Ticket Promedio</div>
+            <div class="metric-value" id="r-avg">$0</div>
+            <div class="metric-sub">Por orden</div>
+          </div>
+          <div class="metric-card amber">
+            <div class="metric-label">Piezas Usadas</div>
+            <div class="metric-value" id="r-parts">0</div>
+            <div class="metric-sub">En reparaciones</div>
+          </div>
+        </div>
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-title">Historial de Órdenes</div>
+            <div class="table-wrap">
+              <table class="income-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Equipo</th>
+                    <th>Estatus</th>
+                    <th>Costo Base</th>
+                    <th>Descuento</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="report-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Órdenes por Tipo</div>
+            <div class="mini-list" id="report-by-type"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer-credits">
+      <strong>SoportePro</strong> · Integrantes del equipo: Cardona Gutiérrez Jesús Iosair · Ornelas Rodríguez Santiago Daniel · Rivera Cueva Yael Sinhue · Serrano Herrera Rodrigo · ZAVALETA ALVARES HECTOR RICARDO
+    </footer>
+  </div>
+</div>
+
+<div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
+<div class="side-panel" id="side-panel">
+  <div class="panel-header">
+    <div>
+      <h3 id="panel-title">Detalle de Orden</h3>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:2px;" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" onclick="closePanel()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="panel-body">
+
+    <div class="section-label">Información del Equipo</div>
+    <div style="background:var(--bg);border-radius:var(--radius);padding:12px;margin-bottom:16px;" id="panel-equipo-info"></div>
+
+    <div class="section-label">Diagnóstico del Técnico</div>
+    <textarea class="form-input" id="panel-diagnostico" rows="3" placeholder="Describe el diagnóstico técnico..." style="margin-bottom:16px;width:100%;resize:vertical;"></textarea>
+
+    <div class="section-label">Cambiar Estatus</div>
+    <select class="form-input form-select" id="panel-estatus" style="margin-bottom:16px;">
+      <option value="Pendiente">Pendiente</option>
+      <option value="En Proceso">En Proceso</option>
+      <option value="Terminado">Terminado</option>
+    </select>
+
+    <div class="section-label">Agregar Refacciones</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <select class="form-input form-select" id="panel-refaccion" style="flex:1;">
+        <option value="">— Seleccionar pieza —</option>
+      </select>
+      <button class="btn btn-primary btn-sm" onclick="agregarRefaccion()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add
+      </button>
+    </div>
+    <div id="panel-components"></div>
+
+    <div class="divider"></div>
+    <div class="section-label">Resumen de Cobro</div>
+    <div id="panel-costs"></div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-secondary" style="flex:1;" onclick="closePanel()">Cancelar</button>
+    <button class="btn btn-primary" style="flex:2;" onclick="guardarOrden()">
+      <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:white;stroke-width:2;stroke-linecap:round;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+      Guardar Cambios
+    </button>
+  </div>
+</div>
+
+<div class="toast-container" id="toasts"></div>
+
+<script>
+// ========== DATA ==========
+const API_URL = ''; // Same origin
+let orders = [];
+let inventory = [];
+
+let currentStep = 1;
+let activeFilter = 'all';
+let activePrioFilter = 'all';
+let selectedOrderId = null;
+let panelComponents = [];
+
+async function init() {
+  document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  await fetchData();
+  updateMetrics();
+  renderDashboard();
+  renderInventario();
+  renderReportes();
+  populateRefacciones();
+}
+
+async function fetchData() {
+  try {
+    const [invRes, ordRes] = await Promise.all([
+      fetch(`${API_URL}/api/inventory`),
+      fetch(`${API_URL}/api/orders`)
+    ]);
+    inventory = await invRes.json();
+    orders = await ordRes.json();
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    showToast('Error al conectar con el servidor', 'error');
+  }
+}
+
+
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelector(`[data-page="${page}"]`).classList.add('active');
+  const titles = {dashboard:['Dashboard','Resumen general del taller'],recepcion:['Recepción','Registro de clientes y equipos'],taller:['Taller (Workbench)','Gestión de órdenes de servicio'],inventario:['Inventario','Control de refacciones y piezas'],reportes:['Reportes','Análisis de ingresos y métricas']};
+  document.getElementById('page-title').textContent = titles[page][0];
+  document.getElementById('page-subtitle').textContent = titles[page][1];
+  if(page==='dashboard') { updateMetrics(); renderDashboard(); }
+  if(page==='taller') renderTaller();
+  if(page==='inventario') renderInventario();
+  if(page==='reportes') renderReportes();
+  if(page==='recepcion') resetForm();
+}
+
+document.querySelectorAll('.nav-item[data-page]').forEach(el => {
+  el.addEventListener('click', () => navigate(el.dataset.page));
+});
+
+function updateMetrics() {
+  const total = orders.length;
+  const pending = orders.filter(o=>o.estatus==='Pendiente').length;
+  const inp = orders.filter(o=>o.estatus==='En Proceso').length;
+  const done = orders.filter(o=>o.estatus==='Terminado').length;
+  document.getElementById('m-total').textContent = total;
+  document.getElementById('m-pending').textContent = pending;
+  document.getElementById('m-inprogress').textContent = inp;
+  document.getElementById('m-done').textContent = done;
+  document.getElementById('ds-pending').textContent = pending;
+  document.getElementById('ds-inprogress').textContent = inp;
+  document.getElementById('ds-done').textContent = done;
+  document.getElementById('nav-badge-taller').textContent = total;
+  const rev = orders.filter(o=>o.estatus==='Terminado').reduce((a,o)=>a+calcTotal(o),0);
+  document.getElementById('dash-revenue').textContent = '$'+rev.toFixed(2);
+  document.getElementById('r-total').textContent = '$'+rev.toFixed(2);
+  const doneOrders = orders.filter(o=>o.estatus==='Terminado');
+  document.getElementById('r-avg').textContent = doneOrders.length ? '$'+(rev/doneOrders.length).toFixed(2) : '$0';
+  const parts = orders.reduce((a,o)=>a+o.componentes.length,0);
+  document.getElementById('r-parts').textContent = parts;
+}
+
+function calcTotal(order) {
+  const compTotal = order.componentes.reduce((a,c)=>a+c.price,0);
+  const base = (parseFloat(order.costo_base)||0) + compTotal;
+  const discount = order.cliente_tipo==='Frecuente' ? base * 0.10 : 0;
+  return base - discount;
+}
+
+function calcDiscount(order) {
+  const compTotal = order.componentes.reduce((a,c)=>a+c.price,0);
+  const base = (parseFloat(order.costo_base)||0) + compTotal;
+  return order.cliente_tipo==='Frecuente' ? base * 0.10 : 0;
+}
+
+function renderDashboard() {
+  updateMetrics();
+  const recent = [...orders].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).slice(0,5);
+  const el = document.getElementById('dash-recent-orders');
+  if(!recent.length) { el.innerHTML='<div class="empty"><p>Sin órdenes registradas</p></div>'; return; }
+  el.innerHTML = `<div class="table-wrap"><table>
+    <thead><tr><th>ID</th><th>Cliente</th><th>Equipo</th><th>Estatus</th><th>Total</th></tr></thead>
+    <tbody>${recent.map(o=>{
+      return `<tr onclick="navigate('taller')"><td style="font-family:'DM Mono';font-size:12px;">ORD-${String(o.id).padStart(3, '0')}</td><td>${o.cliente_nombre||'—'}</td><td>${o.equipo}</td><td>${badgeHtml(o.estatus)}</td><td style="font-weight:600;">$${calcTotal(o).toFixed(2)}</td></tr>`;
+    }).join('')}</tbody></table></div>`;
+
+  const low = inventory.filter(i=>i.stock <= 3);
+  const sel = document.getElementById('dash-stock-low');
+  if(!low.length) { sel.innerHTML='<div class="empty" style="padding:10px 0;"><p>Stock en niveles normales ✓</p></div>'; return; }
+  sel.innerHTML = low.map(i=>`<div class="mini-item"><div class="mini-dot" style="background:${i.stock===0?'#E53E3E':'#D69E2E'};"></div><span class="mini-name">${i.name}</span><span class="mini-count">${i.stock}</span></div>`).join('');
+}
+
+function setFilter(val, el) {
+  activeFilter = val;
+  document.querySelectorAll('[data-filter]').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  renderTaller();
+}
+function setFilterPrio(val, el) {
+  activePrioFilter = val;
+  document.querySelectorAll('[data-filter-prio]').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  renderTaller();
+}
+
+function renderTaller() {
+  const q = document.getElementById('taller-search').value.toLowerCase();
+  let filtered = orders.filter(o => {
+    const matchQ = !q || o.id.toLowerCase().includes(q) || o.equipo.toLowerCase().includes(q) || (o.cliente_nombre && o.cliente_nombre.toLowerCase().includes(q)) || o.falla.toLowerCase().includes(q);
+    const matchS = activeFilter==='all' || o.estatus===activeFilter;
+    const matchP = activePrioFilter==='all' || o.prioridad===activePrioFilter;
+    return matchQ && matchS && matchP;
+  });
+  const tbody = document.getElementById('taller-tbody');
+  const empty = document.getElementById('taller-empty');
+  if(!filtered.length) { tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  tbody.innerHTML = filtered.map(o => {
+    const prioColor = o.prioridad==='Urgente'?'color:#742A2A;background:#FED7D7;':o.prioridad==='Alta'?'color:#744210;background:#FEFCBF;':'color:var(--text-muted);background:var(--bg);';
+    return `<tr onclick="openPanel('${o.id}')" ${o.id===selectedOrderId?'class="selected"':''}>
+      <td style="font-family:'DM Mono';font-size:12px;font-weight:500;">ORD-${String(o.id).padStart(3, '0')}</td>
+      <td>${formatDate(o.fecha)}</td>
+      <td><div style="font-weight:500;">${o.cliente_nombre||'—'}</div><div style="font-size:11px;color:var(--text-muted);">${o.cliente_tipo?'<span class="type-tag '+(o.cliente_tipo==='Frecuente'?'type-frecuente':'type-regular')+'">'+o.cliente_tipo+'</span>':''}</div></td>
+      <td><div>${o.equipo}</div><div style="font-size:11px;color:var(--text-muted);">${o.marca} ${o.modelo}</div></td>
+      <td style="max-width:160px;"><div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="falla-${o.id}"></div></td>
+      <td><span style="font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:10px;${prioColor}">${o.prioridad}</span></td>
+      <td>${badgeHtml(o.estatus)}</td>
+      <td style="font-weight:600;font-family:'DM Mono';">$${calcTotal(o).toFixed(2)}</td>
+      <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openPanel('${o.id}')">
+        <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Editar
+      </button></td>
+    </tr>`;
+  }).join('');
+  // Set text content to avoid XSS
+  filtered.forEach(o => {
+    const el = document.getElementById(`falla-${o.id}`);
+    if (el) { el.textContent = o.falla; el.title = o.falla; }
+  });
+}
+
+function badgeHtml(estatus) {
+  const map = {'Pendiente':'badge-pending','En Proceso':'badge-inprogress','Terminado':'badge-done'};
+  return `<span class="badge ${map[estatus]||''}">${estatus}</span>`;
+}
+
+function formatDate(d) {
+  return new Date(d+'T12:00:00').toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+function openPanel(orderId) {
+  selectedOrderId = orderId;
+  const order = orders.find(o=>o.id===orderId);
+  if(!order) return;
+  panelComponents = JSON.parse(JSON.stringify(order.componentes));
+
+  document.getElementById('panel-title').textContent = 'Orden ORD-' + String(order.id).padStart(3, '0');
+  document.getElementById('panel-subtitle').textContent = order.cliente_nombre || '—';
+  document.getElementById('panel-diagnostico').value = order.diagnostico || '';
+  document.getElementById('panel-estatus').value = order.estatus;
+
+  document.getElementById('panel-equipo-info').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;">
+      <div><span style="color:var(--text-muted);font-size:11px;">Equipo</span><div style="font-weight:600;">${order.equipo}</div></div>
+      <div><span style="color:var(--text-muted);font-size:11px;">Marca / Modelo</span><div style="font-weight:600;">${order.marca} ${order.modelo}</div></div>
+      <div><span style="color:var(--text-muted);font-size:11px;">No. Serie</span><div style="font-family:'DM Mono';font-size:12px;">${order.serie||'N/A'}</div></div>
+      <div><span style="color:var(--text-muted);font-size:11px;">Tipo Cliente</span><div>${order.cliente_tipo?'<span class="type-tag '+(order.cliente_tipo==='Frecuente'?'type-frecuente':'type-regular')+'">'+order.cliente_tipo+'</span>':'—'}</div></div>
+      <div style="grid-column:1/-1;"><span style="color:var(--text-muted);font-size:11px;">Falla Reportada</span><div>${order.falla}</div></div>
+    </div>`;
+
+  renderPanelComponents();
+  document.getElementById('panel-overlay').classList.add('open');
+  document.getElementById('side-panel').classList.add('open');
+  renderTaller();
+}
+
+function closePanel() {
+  selectedOrderId = null;
+  document.getElementById('panel-overlay').classList.remove('open');
+  document.getElementById('side-panel').classList.remove('open');
+  renderTaller();
+}
+
+function renderPanelComponents() {
+  const el = document.getElementById('panel-components');
+  if(!panelComponents.length) { el.innerHTML='<div style="font-size:12.5px;color:var(--text-muted);padding:8px 0;">Sin refacciones agregadas</div>'; }
+  else el.innerHTML = panelComponents.map((c,i)=>`<div class="comp-item"><div><div class="comp-item-name">${c.name}</div><div class="comp-item-price">$${c.price.toFixed(2)}</div></div><span class="comp-remove" onclick="removeComp(${i})" title="Quitar">×</span></div>`).join('');
+  renderPanelCosts();
+}
+
+function removeComp(idx) {
+  const removed = panelComponents[idx];
+  const item = inventory.find(i=>i.id===removed.invId);
+  if(item) item.stock++;
+  panelComponents.splice(idx,1);
+  renderPanelComponents();
+  populateRefacciones();
+}
+
+function agregarRefaccion() {
+  const sel = document.getElementById('panel-refaccion');
+  const invId = sel.value;
+  if(!invId) return;
+  const item = inventory.find(i=>i.id===invId);
+  if(!item || item.stock<=0) { showToast('Sin stock disponible para esta pieza','error'); return; }
+  item.stock--;
+  panelComponents.push({invId:item.id,name:item.name,price:item.price});
+  sel.value='';
+  renderPanelComponents();
+  populateRefacciones();
+  showToast('Refacción agregada: ' + item.name);
+}
+
+function populateRefacciones() {
+  const sel = document.getElementById('panel-refaccion');
+  const val = sel.value;
+  sel.innerHTML = '<option value="">— Seleccionar pieza —</option>' + inventory.filter(i=>i.stock>0).map(i=>`<option value="${i.id}">${i.name} (Stock: ${i.stock}) — $${i.price}</option>`).join('');
+  sel.value = val;
+}
+
+function renderPanelCosts() {
+  const order = orders.find(o=>o.id===selectedOrderId);
+  if(!order) return;
+  const compTotal = panelComponents.reduce((a,c)=>a+c.price,0);
+  const base = (parseFloat(order.costo_base)||0) + compTotal;
+  const discount = order.cliente_tipo==='Frecuente' ? base * 0.10 : 0;
+  const total = base - discount;
+  let html = `<div class="cost-row"><span class="cost-label">Diagnóstico/Mano de obra</span><span>$${(parseFloat(order.costo_base)||0).toFixed(2)}</span></div>`;
+  if(compTotal>0) html += `<div class="cost-row"><span class="cost-label">Refacciones</span><span>$${compTotal.toFixed(2)}</span></div>`;
+  if(discount>0) html += `<div class="cost-row discount"><span class="cost-label">🏷️ Descuento Cliente Frecuente (10%)</span><span>-$${discount.toFixed(2)}</span></div>`;
+  html += `<div class="cost-row total"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
+  document.getElementById('panel-costs').innerHTML = html;
+}
+
+async function guardarOrden() {
+  const order = orders.find(o=>o.id===selectedOrderId);
+  if(!order) return;
+
+  const updatedData = {
+    estatus: document.getElementById('panel-estatus').value,
+    diagnostico: document.getElementById('panel-diagnostico').value,
+    componentes: panelComponents
+  };
+
+  try {
+    const res = await fetch(`${API_URL}/api/orders/${selectedOrderId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedData)
+    });
+
+    if (!res.ok) throw new Error('Error al guardar la orden');
+
+    await fetchData(); // Refresh local data
+    closePanel();
+    updateMetrics();
+    renderTaller();
+    renderReportes();
+    showToast('Orden guardada correctamente','success');
+  } catch (err) {
+    console.error(err);
+    showToast('Error al guardar los cambios', 'error');
+  }
+}
+
+function renderInventario() {
+  const q = document.getElementById('inv-search').value.toLowerCase();
+  const filtered = inventory.filter(i => !q || i.name.toLowerCase().includes(q) || i.sku.toLowerCase().includes(q) || i.category.toLowerCase().includes(q));
+  document.getElementById('inv-count').textContent = filtered.length;
+  const grid = document.getElementById('inv-grid');
+  const empty = document.getElementById('inv-empty');
+  if(!filtered.length) { grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML = filtered.map(i => {
+    const pct = Math.round((i.stock/i.maxStock)*100);
+    const lvl = i.stock===0?'critical':i.stock<=3?'low':'';
+    const stockColor = i.stock===0?'#E53E3E':i.stock<=3?'#D69E2E':'#38A169';
+    return `<div class="inv-card">
+      <div class="inv-name">${i.name}</div>
+      <div class="inv-sku">${i.sku}</div>
+      <div class="inv-row"><span class="inv-label">Precio</span><span class="inv-val">$${i.price}</span></div>
+      <div class="inv-row"><span class="inv-label">Categoría</span><span style="font-size:11.5px;color:var(--text-secondary);">${i.category}</span></div>
+      <div class="inv-row"><span class="inv-label">Stock</span><span class="inv-val" style="color:${stockColor};">${i.stock} / ${i.maxStock}</span></div>
+      <div class="inv-stock-bar"><div class="inv-stock-fill ${lvl}" style="width:${pct}%;"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderReportes() {
+  updateMetrics();
+  const tbody = document.getElementById('report-tbody');
+  tbody.innerHTML = orders.map(o => {
+    const compTotal = o.componentes.reduce((a,comp)=>a+comp.price,0);
+    const base = (parseFloat(o.costo_base)||0) + compTotal;
+    const disc = calcDiscount(o);
+    const total = base - disc;
+    return `<tr>
+      <td style="font-family:'DM Mono';font-size:12px;">ORD-${String(o.id).padStart(3, '0')}</td>
+      <td>${o.cliente_nombre||'—'}<div style="font-size:11px;">${o.cliente_tipo?'<span class="type-tag '+(o.cliente_tipo==='Frecuente'?'type-frecuente':'type-regular')+'">'+o.cliente_tipo+'</span>':''}</div></td>
+      <td>${o.equipo}</td>
+      <td>${badgeHtml(o.estatus)}</td>
+      <td>$${base.toFixed(2)}</td>
+      <td>${disc>0?'<span style="color:#276749;font-weight:600;">-$'+disc.toFixed(2)+'</span>':'—'}</td>
+      <td style="font-weight:700;font-family:'DM Mono';">$${total.toFixed(2)}</td>
+    </tr>`;
+  }).join('');
+
+
+  const byType = {};
+  orders.forEach(o => { byType[o.equipo.split(' ')[0]] = (byType[o.equipo.split(' ')[0]]||0)+1; });
+  const colors = ['#1E6BA8','#38A169','#D69E2E','#E53E3E','#805AD5'];
+  document.getElementById('report-by-type').innerHTML = Object.entries(byType).map(([k,v],i)=>`<div class="mini-item"><div class="mini-dot" style="background:${colors[i%colors.length]};"></div><span class="mini-name">${k}</span><span class="mini-count">${v}</span></div>`).join('');
+}
+
+function resetForm() {
+  currentStep = 1;
+  ['f-nombre','f-tel','f-email','f-falla','f-obs','f-serie','f-color','f-accesorios','f-costo'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-tipo','f-equipo','f-marca','f-modelo','f-prioridad'].forEach(id=>{ const el=document.getElementById(id); if(el) el.selectedIndex=0; });
+  goToStep(1);
+}
+
+function goToStep(n) {
+  for(let i=1;i<=3;i++) {
+    document.getElementById('step-content-'+i).style.display = i===n?'block':'none';
+    const s = document.getElementById('step-'+i);
+    s.className = 'step' + (i<n?' done':i===n?' active':'');
+  }
+  currentStep=n;
+}
+
+function stepNext(from) {
+  if(from===1) {
+    if(!document.getElementById('f-nombre').value.trim()||!document.getElementById('f-tel').value.trim()) { showToast('Por favor completa nombre y teléfono','error'); return; }
+  }
+  if(from===2) {
+    if(!document.getElementById('f-marca').value.trim()||!document.getElementById('f-modelo').value.trim()) { showToast('Por favor completa marca y modelo','error'); return; }
+  }
+  goToStep(from+1);
+}
+
+function stepBack(from) { goToStep(from-1); }
+
+async function registrarOrden() {
+  const falla = document.getElementById('f-falla').value.trim();
+  if(!falla) { showToast('Describe la falla reportada','error'); return; }
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const tel = document.getElementById('f-tel').value.trim();
+  const tipo = document.getElementById('f-tipo').value;
+  const email = document.getElementById('f-email').value.trim();
+
+  const marca = document.getElementById('f-marca').value.trim();
+  const modelo = document.getElementById('f-modelo').value.trim();
+  const equipo = document.getElementById('f-equipo').value + ' ' + marca + ' ' + modelo;
+  const serie = document.getElementById('f-serie').value.trim();
+  const prioridad = document.getElementById('f-prioridad').value;
+  const costoBase = parseFloat(document.getElementById('f-costo').value)||150;
+
+  const payload = {
+    cliente: { nombre, tel, tipo, email },
+    orden: { equipo, marca, modelo, serie, falla, prioridad, costoBase }
+  };
+
+  try {
+    const res = await fetch(`${API_URL}/api/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) throw new Error('Error al registrar la orden');
+
+    const data = await res.json();
+    await fetchData(); // Refresh local data
+    updateMetrics();
+    showToast('Orden ORD-'+String(data.id).padStart(3, '0')+' registrada exitosamente','success');
+    setTimeout(()=>navigate('taller'), 800);
+  } catch (err) {
+    console.error(err);
+    showToast('Error al registrar la orden', 'error');
+  }
+}
+
+function showToast(msg, type='') {
+  const container = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = 'toast' + (type?' '+type:'');
+  const icons = {success:'<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',error:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',warning:'<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'};
+  t.innerHTML = (icons[type]||icons['success']) + '<span>' + msg + '</span>';
+  container.appendChild(t);
+  requestAnimationFrame(()=>{ t.classList.add('show'); });
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },3200);
+}
+
+
+init();
+renderDashboard();
+</script>
+</body>
+</html>
