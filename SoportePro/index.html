@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soporte — Taller de Soporte Técnico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --oxford: #002147;
+  --oxford-light: #003068;
+  --oxford-dark: #001530;
+  --slate: #4A5568;
+  --slate-light: #718096;
+  --slate-mid: #2D3748;
+  --white: #FFFFFF;
+  --bg: #F7F8FA;
+  --bg-card: #FFFFFF;
+  --border: #E2E8F0;
+  --border-dark: #CBD5E0;
+  --text-primary: #1A202C;
+  --text-secondary: #4A5568;
+  --text-muted: #A0AEC0;
+  --accent: #1E6BA8;
+  --accent-light: #EBF4FF;
+  --success: #276749;
+  --success-bg: #C6F6D5;
+  --warning: #744210;
+  --warning-bg: #FEFCBF;
+  --danger: #742A2A;
+  --danger-bg: #FED7D7;
+  --sidebar-w: 240px;
+  --header-h: 56px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); font-size: 14px; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; }
+a { text-decoration: none; color: inherit; }
+
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--oxford);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.sidebar-brand {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.brand-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.brand-icon {
+  width: 36px; height: 36px; background: var(--accent);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+}
+.brand-icon svg { width: 20px; height: 20px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; }
+.brand-name { color: white; font-size: 15px; font-weight: 600; letter-spacing: -0.2px; line-height: 1.2; }
+.brand-sub { color: rgba(255,255,255,0.45); font-size: 11px; font-weight: 400; }
+
+.sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+.nav-section { padding: 0 12px; margin-bottom: 4px; }
+.nav-section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 1px;
+  color: rgba(255,255,255,0.3); text-transform: uppercase;
+  padding: 8px 8px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 6px;
+  color: rgba(255,255,255,0.65); font-size: 13.5px; font-weight: 400;
+  cursor: pointer; transition: all 0.15s; margin-bottom: 1px;
+  user-select: none;
+}
+.nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+.nav-item.active { background: var(--accent); color: white; font-weight: 500; }
+.nav-item svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: rgba(255,255,255,0.15);
+  color: white; font-size: 10px; font-weight: 600;
+  padding: 1px 6px; border-radius: 10px;
+}
+
+.sidebar-footer {
+  padding: 12px; border-top: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 6px;
+  color: rgba(255,255,255,0.65);
+}
+.user-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent); display: flex; align-items: center;
+  justify-content: center; font-size: 12px; font-weight: 600; color: white; flex-shrink: 0;
+}
+.user-name { font-size: 12.5px; color: rgba(255,255,255,0.8); font-weight: 500; }
+.user-role { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar {
+  height: var(--header-h); background: white; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px; gap: 16px;
+  flex-shrink: 0;
+}
+.topbar-title { font-size: 16px; font-weight: 600; color: var(--text-primary); flex: 1; }
+.topbar-subtitle { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 1px; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--radius); font-size: 13px;
+  font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.15s;
+}
+.btn-primary { background: var(--oxford); color: white; }
+.btn-primary:hover { background: var(--oxford-light); }
+.btn-secondary { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-dark); }
+.btn-secondary:hover { background: var(--bg); }
+.btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+.content { flex: 1; overflow-y: auto; padding: 24px; }
+.page { display: none; }
+.page.active { display: block; }
+
+.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.metric-card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 18px 20px; position: relative; overflow: hidden;
+}
+.metric-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent);
+}
+.metric-card.green::before { background: #38A169; }
+.metric-card.amber::before { background: #D69E2E; }
+.metric-card.red::before { background: #E53E3E; }
+.metric-label { font-size: 12px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.metric-value { font-size: 28px; font-weight: 600; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
+.metric-sub { font-size: 12px; color: var(--text-muted); }
+.metric-icon {
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--accent-light); display: flex; align-items: center; justify-content: center;
+}
+.metric-icon.green-bg { background: #F0FFF4; }
+.metric-icon.amber-bg { background: #FFFFF0; }
+.metric-icon.red-bg { background: #FFF5F5; }
+.metric-icon svg { width: 20px; height: 20px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+.metric-icon.green-bg svg { stroke: #38A169; }
+.metric-icon.amber-bg svg { stroke: #D69E2E; }
+.metric-icon.red-bg svg { stroke: #E53E3E; }
+
+.dash-grid { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+.card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 20px;
+}
+.card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600;
+}
+.badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+.badge-pending { background: var(--danger-bg); color: var(--danger); }
+.badge-pending::before { background: #E53E3E; }
+.badge-inprogress { background: var(--warning-bg); color: var(--warning); }
+.badge-inprogress::before { background: #D69E2E; }
+.badge-done { background: var(--success-bg); color: var(--success); }
+.badge-done::before { background: #38A169; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 1px solid var(--border); background: var(--bg); }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; }
+tbody tr:hover { background: var(--accent-light); }
+tbody td { padding: 12px 14px; color: var(--text-primary); }
+
+.stepper { display: flex; align-items: center; gap: 0; margin-bottom: 28px; }
+.step { display: flex; align-items: center; gap: 10px; flex: 1; position: relative; }
+.step:not(:last-child)::after { content: ''; position: absolute; left: calc(50% + 18px); right: calc(-50% + 18px); top: 18px; height: 2px; background: var(--border); z-index: 0; }
+.step.active:not(:last-child)::after, .step.done:not(:last-child)::after { background: var(--accent); }
+.step-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; border: 2px solid var(--border); background: white; color: var(--text-muted); z-index: 1; position: relative; }
+.step.active .step-num { border-color: var(--accent); background: var(--accent); color: white; }
+.step.done .step-num { border-color: var(--accent); background: var(--accent); color: white; }
+.step-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+.step.active .step-label { color: var(--accent); font-weight: 600; }
+.step-inner { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.form-input { padding: 9px 12px; border: 1px solid var(--border-dark); border-radius: var(--radius); font-size: 13.5px; outline: none; background: white; }
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(30,107,168,0.1); }
+
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 200; display: flex; flex-direction: column; gap: 10px; }
+.toast { background: var(--oxford); color: white; padding: 12px 18px; border-radius: var(--radius-lg); font-size: 13.5px; transform: translateX(120%); transition: all 0.3s; }
+.toast.show { transform: translateX(0); }
+.toast.success { background: #276749; }
+.toast.error { background: #742A2A; }
+
+.inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.inv-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; }
+.inv-name { font-size: 13.5px; font-weight: 600; margin-bottom: 4px; }
+.inv-sku { font-size: 11px; color: var(--text-muted); font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div>
+          <div class="brand-name">Soporte</div>
+          <div class="brand-sub">Taller Técnico</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">Principal</div>
+        <div class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item" data-page="recepcion" onclick="navigate('recepcion')">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Recepción
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Gestión</div>
+        <div class="nav-item" data-page="inventario" onclick="navigate('inventario')">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          Inventario
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <div class="topbar-title" id="page-title">Dashboard</div>
+        <div class="topbar-subtitle" id="page-subtitle">Resumen general del taller</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary" onclick="navigate('recepcion')">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nueva Orden
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Dashboard Page -->
+      <div class="page active" id="page-dashboard">
+        <div class="metrics-grid">
+          <div class="metric-card"><div class="metric-label">Total Órdenes</div><div class="metric-value" id="m-total">0</div></div>
+          <div class="metric-card red"><div class="metric-label">Pendientes</div><div class="metric-value" id="m-pending">0</div></div>
+          <div class="metric-card amber"><div class="metric-label">En Proceso</div><div class="metric-value" id="m-inprogress">0</div></div>
+          <div class="metric-card green"><div class="metric-label">Terminadas</div><div class="metric-value" id="m-done">0</div></div>
+        </div>
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-title">Órdenes Recientes</div>
+            <div id="dash-recent-orders"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Ingresos</div>
+            <div style="font-size:26px;font-weight:700;" id="dash-revenue">$0.00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reception Page -->
+      <div class="page" id="page-recepcion">
+        <div class="card" style="max-width:760px;">
+          <div class="stepper">
+            <div class="step active" id="step-1"><div class="step-inner"><div class="step-num">1</div><div class="step-label">Cliente</div></div></div>
+            <div class="step" id="step-2"><div class="step-inner"><div class="step-num">2</div><div class="step-label">Equipo</div></div></div>
+            <div class="step" id="step-3"><div class="step-inner"><div class="step-num">3</div><div class="step-label">Falla</div></div></div>
+          </div>
+
+          <div id="step-content-1">
+            <div class="form-grid">
+              <div class="form-group"><label class="form-label">Nombre *</label><input type="text" class="form-input" id="f-nombre" placeholder="Nombre Completo"></div>
+              <div class="form-group"><label class="form-label">Teléfono *</label><input type="text" class="form-input" id="f-tel" placeholder="33 1234 5678"></div>
+              <div class="form-group"><label class="form-label">Email</label><input type="text" class="form-input" id="f-email" placeholder="cliente@email.com"></div>
+              <div class="form-group"><label class="form-label">Tipo *</label><select class="form-input" id="f-tipo"><option value="Regular">Regular</option><option value="Frecuente">Frecuente</option></select></div>
+            </div>
+            <button class="btn btn-primary" onclick="stepNext(1)">Continuar</button>
+          </div>
+
+          <div id="step-content-2" style="display:none;">
+            <div class="form-grid">
+              <div class="form-group"><label class="form-label">Equipo *</label><select class="form-input" id="f-equipo"><option value="Laptop">Laptop</option><option value="PC">PC</option></select></div>
+              <div class="form-group"><label class="form-label">Marca *</label><input type="text" class="form-input" id="f-marca"></div>
+              <div class="form-group"><label class="form-label">Modelo *</label><input type="text" class="form-input" id="f-modelo"></div>
+              <div class="form-group"><label class="form-label">N. Serie</label><input type="text" class="form-input" id="f-serie"></div>
+              <div class="form-group"><label class="form-label">Color</label><input type="text" class="form-input" id="f-color"></div>
+              <div class="form-group"><label class="form-label">Accesorios</label><input type="text" class="form-input" id="f-accesorios"></div>
+            </div>
+            <button class="btn btn-secondary" onclick="stepBack(2)">Regresar</button>
+            <button class="btn btn-primary" onclick="stepNext(2)">Continuar</button>
+          </div>
+
+          <div id="step-content-3" style="display:none;">
+            <div class="form-grid">
+              <div class="form-group full"><label class="form-label">Falla *</label><textarea class="form-input" id="f-falla" rows="3"></textarea></div>
+              <div class="form-group"><label class="form-label">Prioridad</label><select class="form-input" id="f-prioridad"><option value="Normal">Normal</option><option value="Alta">Alta</option></select></div>
+              <div class="form-group"><label class="form-label">Costo Diagnóstico</label><input type="number" class="form-input" id="f-costo" value="0"></div>
+              <div class="form-group full"><label class="form-label">Observaciones</label><textarea class="form-input" id="f-obs" rows="2"></textarea></div>
+            </div>
+            <button class="btn btn-secondary" onclick="stepBack(3)">Regresar</button>
+            <button class="btn btn-primary" onclick="registrarOrden()">Registrar Orden</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventory Page -->
+      <div class="page" id="page-inventario">
+        <div class="inv-grid" id="inventory-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+  const API_URL = 'http://localhost:3000/api';
+
+  function navigate(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    const navItem = document.querySelector(`[data-page="${pageId}"]`);
+    if(navItem) navItem.classList.add('active');
+
+    if (pageId === 'dashboard') loadDashboard();
+    if (pageId === 'inventario') loadInventory();
+  }
+
+  function stepNext(step) {
+    document.getElementById(`step-content-${step}`).style.display = 'none';
+    document.getElementById(`step-content-${step+1}`).style.display = 'block';
+    document.getElementById(`step-${step+1}`).classList.add('active');
+  }
+
+  function stepBack(step) {
+    document.getElementById(`step-content-${step}`).style.display = 'none';
+    document.getElementById(`step-content-${step-1}`).style.display = 'block';
+    document.getElementById(`step-${step}`).classList.remove('active');
+  }
+
+  async function loadDashboard() {
+    try {
+      const res = await fetch(`${API_URL}/metrics`);
+      const data = await res.json();
+      document.getElementById('m-total').textContent = data.total;
+      document.getElementById('m-pending').textContent = data.pending;
+      document.getElementById('m-inprogress').textContent = data.inprogress;
+      document.getElementById('m-done').textContent = data.done;
+      document.getElementById('dash-revenue').textContent = `$${parseFloat(data.revenue).toFixed(2)}`;
+
+      const resRecent = await fetch(`${API_URL}/recent-orders`);
+      const recent = await resRecent.json();
+      const container = document.getElementById('dash-recent-orders');
+      if (!recent || recent.length === 0) {
+        container.innerHTML = '<div class="empty">Sin órdenes registradas</div>';
+      } else {
+        container.innerHTML = `<table><thead><tr><th>ID</th><th>Cliente</th><th>Estatus</th></tr></thead><tbody>${recent.map(o => `<tr><td>#${o.id_orden}</td><td>${o.cliente}</td><td><span class="badge badge-${o.estatus.toLowerCase().replace(' ', '')}">${o.estatus}</span></td></tr>`).join('')}</tbody></table>`;
+      }
+    } catch (e) { showToast('Error al cargar dashboard', 'error'); }
+  }
+
+  async function loadInventory() {
+    try {
+      const res = await fetch(`${API_URL}/inventario`);
+      const data = await res.json();
+      const container = document.getElementById('inventory-list');
+      container.innerHTML = data.map(i => `<div class="inv-card"><div class="inv-name">${i.nombre_item}</div><div class="inv-sku">${i.sku}</div><div style="margin-top:10px;">Stock: <b>${i.stock_actual}</b></div></div>`).join('');
+    } catch (e) { showToast('Error al cargar inventario', 'error'); }
+  }
+
+  async function registrarOrden() {
+    const data = {
+      cliente: {
+        nombre: document.getElementById('f-nombre').value,
+        telefono: document.getElementById('f-tel').value,
+        email: document.getElementById('f-email').value,
+        tipo: document.getElementById('f-tipo').value
+      },
+      equipo: {
+        tipo: document.getElementById('f-equipo').value,
+        marca: document.getElementById('f-marca').value,
+        modelo: document.getElementById('f-modelo').value,
+        serie: document.getElementById('f-serie').value,
+        color: document.getElementById('f-color').value,
+        accesorios: document.getElementById('f-accesorios').value
+      },
+      orden: {
+        falla: document.getElementById('f-falla').value,
+        prioridad: document.getElementById('f-prioridad').value,
+        costo: document.getElementById('f-costo').value,
+        observaciones: document.getElementById('f-obs').value
+      }
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/ordenes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        showToast('¡Orden registrada con éxito!', 'success');
+        navigate('dashboard');
+        // Reset form steps
+        document.getElementById('step-content-3').style.display = 'none';
+        document.getElementById('step-content-1').style.display = 'block';
+        document.getElementById('step-2').classList.remove('active');
+        document.getElementById('step-3').classList.remove('active');
+        // Reset fields
+        ['f-nombre','f-tel','f-email','f-marca','f-modelo','f-serie','f-color','f-accesorios','f-falla','f-costo','f-obs'].forEach(id => document.getElementById(id).value = '');
+      } else {
+        showToast('Error al registrar orden', 'error');
+      }
+    } catch (e) { showToast('Error de conexión', 'error'); }
+  }
+
+  function showToast(msg, type) {
+    const toast = document.createElement('div');
+    toast.className = `toast show ${type}`;
+    toast.textContent = msg;
+    document.getElementById('toast-container').appendChild(toast);
+    setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
+  }
+
+  window.onload = loadDashboard;
+</script>
+</body>
+</html>
